@@ -1,2 +1,2 @@
-# sidequest
+# sidequests
 small thing just for me.. hehe...
