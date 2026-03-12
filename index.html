@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,7 +15,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
 
 <style>
@@ -38,9 +38,28 @@ padding:20px;
 
 .container{max-width:500px;width:100%;}
 
-h1{font-size:2.5rem;margin-bottom:.5rem;font-weight:700;}
+h1{font-size:2.75rem;margin-bottom:.5rem;font-weight:700;}
 
-.subtitle{font-size:.9rem;margin-bottom:2rem;opacity:.7;}
+.subtitle{font-size:.99rem;margin-bottom:1rem;opacity:.7;}
+
+.filter-tabs{
+display:flex;
+gap:1.5rem;
+margin-bottom:2rem;
+font-size:1.155rem;
+}
+
+.filter-tab{
+cursor:pointer;
+opacity:.5;
+transition:opacity .3s;
+}
+
+.filter-tab:hover{opacity:.7;}
+
+.filter-tab.active{
+opacity:1;
+}
 
 .quest-list{margin-bottom:2rem;}
 
@@ -49,7 +68,7 @@ display:flex;
 align-items:center;
 gap:.75rem;
 margin-bottom:1.5rem;
-font-size:1.25rem;
+font-size:1.155rem;
 flex-direction:row-reverse;
 justify-content:flex-end;
 }
@@ -69,8 +88,8 @@ line-height:1.5;
 input[type="checkbox"]{
 appearance:none;
 -webkit-appearance:none;
-width:18px;
-height:18px;
+width:20px;
+height:20px;
 border:2px solid #242921;
 border-radius:50%;
 cursor:pointer;
@@ -86,7 +105,7 @@ opacity:.5;
 }
 
 .difficulty-badge{
-font-size:.75rem;
+font-size:.825rem;
 padding:.2rem .5rem;
 border-radius:3px;
 white-space:nowrap;
@@ -106,11 +125,11 @@ color:#c7c7c3;
 border:none;
 padding:.75rem 1.5rem;
 font-family:'Hina Mincho',serif;
-font-size:1rem;
+font-size:1.1rem;
 font-weight:700;
 border-radius:4px;
 cursor:pointer;
-transition:opacity .4s;
+transition:opacity .2s;
 }
 
 button:hover{opacity:.85;}
@@ -119,8 +138,8 @@ button:active{opacity:.7;}
 .button-container{display:flex;gap:.75rem;align-items:center;}
 
 .theme-toggle{
-width:48px;
-height:48px;
+width:53px;
+height:53px;
 padding:.75rem;
 display:flex;
 align-items:center;
@@ -136,14 +155,21 @@ body.dark-mode .difficulty-medium{background:rgba(199,199,195,.25);color:#c7c7c3
 body.dark-mode .difficulty-hard{background:rgba(199,199,195,.4);color:#c7c7c3;}
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1 id="title">sidequests</h1>
-<p class="subtitle">things to do! • made by @nenpasar</p>
+<h1 id="title">sidequest</h1>
+<p class="subtitle">things to do for fun..</p>
+
+<div class="filter-tabs">
+<span class="filter-tab active" id="tab-all" onclick="playClick2();setFilter('all')">all</span>
+<span class="filter-tab" id="tab-indoors" onclick="playClick2();setFilter('indoors')">indoors</span>
+<span class="filter-tab" id="tab-outdoors" onclick="playClick2();setFilter('outdoors')">outdoors</span>
+</div>
 
 <div class="quest-list" id="questList"></div>
 
@@ -181,315 +207,318 @@ audio.play().catch(e => console.log('Audio play failed:', e));
 
 const STORAGE="sidequest_save";
 
+let currentFilter = 'all';
+
+// i'm tagging just a sample - you'll want to go through and tag ALL quests as 'indoors', 'outdoors', or 'both'
 const allQuests = {
 
 easy: [
-"compliment someone's fit in the hallway",
-"take a different route to your usual class",
-"drink water before coffee (revolutionary ik)",
-"doodle in your notebook margins during lecture",
-"text an old friend you haven't talked to in a while",
-"sit in a different spot in class",
-"take a photo of something beautiful/weird today",
-"wear something slightly outside your usual rotation",
-"send a meme to your group chat",
-"give someone a genuine thank you",
-"write down 3 things you're grateful for",
-"take the stairs instead of the elevator",
-"wear your favorite piece of clothing",
-"make a new playlist (even just 5 songs)",
-"compliment someone's work in class",
-"leave a nice comment on someone's post",
-"take notes with a different color pen",
-"hold the door for 3+ people",
-"listen to a podcast episode on your walk",
-"eat an actual vegetable (yes this counts)",
-"swap your phone wallpaper to something nice",
-"make eye contact and smile at a stranger",
-"rate your day 1-10 in notes app",
-"wear your lucky socks/jewelry",
-"chug a full water bottle",
-"update one playlist with new songs",
-"do your skincare routine properly",
-"archive old instagram posts or tweets",
-"wear something that makes you feel cool",
-"say something nice to yourself in the mirror",
-"check the weather and dress accordingly",
-"make a \"things that went well\" list",
-"drink tea/coffee slowly instead of chugging",
-"share something you learned recently",
-"switch up your morning routine slightly",
-"take breaks every hour when studying",
-"take a different seat on the bus/in cafeteria",
-"post something on your story",
-"backup your important files",
-"give someone a high five",
-"change your sheets",
-"compliment yourself on something specific",
-"do something with intention (even brushing teeth)",
-"notice 5 things around you right now",
-"update phone contacts (delete old, add last names)",
-"take a photo of your outfit",
-"try a new study method (flashcards, mind maps)",
-"send a voice memo instead of text",
-"clean your glasses/phone screen",
-"organize your desktop (digital or physical)",
-"appreciate something mundane (good pen, nice lighting)",
-"hydrate more than usual",
-"bring a tote bag instead of plastic",
-"check in with someone who might need it",
-"wear layers you can adjust",
-"notice something new about a familiar place",
-"archive camera roll photos into albums",
-"send appreciation text to family",
-"blast your favorite song and vibe",
-"notice how you're breathing right now",
-"give yourself permission to rest",
-"make your favorite comfort food",
-"update one password",
-"share a book/show/music rec with someone",
-"notice something you're good at today",
-"make a \"hype yourself up\" note",
-"try a productivity app or new tool",
-"eat something colorful",
-"wear your comfiest shoes",
-"notice your posture and fix it",
-"update your bio somewhere",
-"wear fun socks or accessories",
-"save a wholesome meme/post",
-"drink something other than water or coffee",
-"try a tiktok trend (even badly)",
-"organize browser tabs (close 15+)",
-"take note of what you're procrastinating",
-"send a \"this made me think of you\" text",
-"make lock screen something motivating",
-"check on a plant (or get one)",
-"do something slowly on purpose",
-"appreciate your body for what it does",
-"archive old chats/conversations",
-"check the moon phase (just for fun)",
-"make a \"wins\" list (any size)",
-"bring reusable water bottle everywhere",
-"notice the temperature and adjust clothes",
-"smell fresh air intentionally",
-"tap into a memory (photo, song, place)",
-"fix one small annoying thing (loose button, dead link)",
-"notice something kind someone did",
-"wear your comfiest outfit",
-"save one useful link/article",
-"drink water first thing when you wake up",
-"compliment something about your space",
-"take one aesthetic photo",
-"notice the sky today",
-"use a fun pen/pencil",
-"stretch your neck and shoulders",
-"put on lotion/chapstick",
-"notice three sounds around you",
-"open a window for fresh air",
-"smile at yourself",
-"notice one thing you like about today",
-"tell a friend that ya love em very much (RARE!)",
-"notice textures (fabric, surface, ground)",
-"save a recipe you want to try",
-"wear something with a pattern",
-"appreciate good lighting",
-"send a random emoji to a friend",
-"notice your energy level",
-"put something back where it belongs",
-"notice colors around you",
-"use airplane mode for 30 min",
-"appreciate something free",
-"notice the weather",
-"save a wholesome tiktok/reel",
-"notice one small detail",
-"drink tea/coffee at a different time",
-"wear a fun accessory",
-"appreciate your friends",
-"notice your favorite part of the day",
-"save a good quote/lyric",
-"breathe deeply 3 times",
-"notice something funny",
-"use a nice-smelling soap",
-"appreciate technology working",
-"acknowledge your mood",
-"drink something warm",
-"appreciate having shelter",
-"notice one privilege",
-"use good posture for 10 min",
-"appreciate your ability to learn",
-"notice something that makes you curious",
-"drink water before every meal",
-"appreciate having choices",
-"notice your thoughts",
-"use a new emoji",
-"appreciate art somewhere",
-"notice someone's effort",
-"smell something pleasant",
-"appreciate a small convenience",
-"notice your growth",
-"take a moment of silence",
-"appreciate music existing",
-"notice your progress",
-"take a screen break",
-"appreciate making it this far",
-"say something nice about yourself",
-"celebrate however you want"
+{text:"compliment someone's fit in the hallway",loc:"both"},
+{text:"take a different route to your usual class",loc:"outdoors"},
+{text:"drink water before coffee (revolutionary ik)",loc:"indoors"},
+{text:"doodle in your notebook margins during lecture",loc:"indoors"},
+{text:"text an old friend you haven't talked to in a while",loc:"both"},
+{text:"sit in a different spot in class",loc:"indoors"},
+{text:"take a photo of something beautiful/weird today",loc:"both"},
+{text:"wear something slightly outside your usual rotation",loc:"both"},
+{text:"send a meme to your group chat",loc:"both"},
+{text:"give someone a genuine thank you",loc:"both"},
+{text:"write down 3 things you're grateful for",loc:"indoors"},
+{text:"take the stairs instead of the elevator",loc:"both"},
+{text:"wear your favorite piece of clothing",loc:"both"},
+{text:"make a new playlist (even just 5 songs)",loc:"indoors"},
+{text:"compliment someone's work in class",loc:"indoors"},
+{text:"leave a nice comment on someone's post",loc:"both"},
+{text:"take notes with a different color pen",loc:"indoors"},
+{text:"hold the door for 3+ people",loc:"both"},
+{text:"listen to a podcast episode on your walk",loc:"outdoors"},
+{text:"eat an actual vegetable (yes this counts)",loc:"both"},
+{text:"swap your phone wallpaper to something nice",loc:"both"},
+{text:"make eye contact and smile at a stranger",loc:"both"},
+{text:"rate your day 1-10 in notes app",loc:"both"},
+{text:"wear your lucky socks/jewelry",loc:"both"},
+{text:"chug a full water bottle",loc:"both"},
+{text:"update one playlist with new songs",loc:"both"},
+{text:"do your skincare routine properly",loc:"indoors"},
+{text:"archive old instagram posts or tweets",loc:"both"},
+{text:"wear something that makes you feel cool",loc:"both"},
+{text:"say something nice to yourself in the mirror",loc:"indoors"},
+{text:"check the weather and dress accordingly",loc:"both"},
+{text:"make a \"things that went well\" list",loc:"both"},
+{text:"drink tea/coffee slowly instead of chugging",loc:"both"},
+{text:"share something you learned recently",loc:"both"},
+{text:"switch up your morning routine slightly",loc:"indoors"},
+{text:"take breaks every hour when studying",loc:"indoors"},
+{text:"take a different seat on the bus/in cafeteria",loc:"both"},
+{text:"post something on your story",loc:"both"},
+{text:"backup your important files",loc:"indoors"},
+{text:"give someone a high five",loc:"both"},
+{text:"change your sheets",loc:"indoors"},
+{text:"compliment yourself on something specific",loc:"both"},
+{text:"do something with intention (even brushing teeth)",loc:"both"},
+{text:"notice 5 things around you right now",loc:"both"},
+{text:"update phone contacts (delete old, add last names)",loc:"both"},
+{text:"take a photo of your outfit",loc:"both"},
+{text:"try a new study method (flashcards, mind maps)",loc:"indoors"},
+{text:"send a voice memo instead of text",loc:"both"},
+{text:"clean your glasses/phone screen",loc:"both"},
+{text:"organize your desktop (digital or physical)",loc:"indoors"},
+{text:"appreciate something mundane (good pen, nice lighting)",loc:"both"},
+{text:"hydrate more than usual",loc:"both"},
+{text:"bring a tote bag instead of plastic",loc:"both"},
+{text:"check in with someone who might need it",loc:"both"},
+{text:"wear layers you can adjust",loc:"both"},
+{text:"notice something new about a familiar place",loc:"both"},
+{text:"archive camera roll photos into albums",loc:"both"},
+{text:"send appreciation text to family",loc:"both"},
+{text:"blast your favorite song and vibe",loc:"indoors"},
+{text:"notice how you're breathing right now",loc:"both"},
+{text:"give yourself permission to rest",loc:"both"},
+{text:"make your favorite comfort food",loc:"indoors"},
+{text:"update one password",loc:"both"},
+{text:"share a book/show/music rec with someone",loc:"both"},
+{text:"notice something you're good at today",loc:"both"},
+{text:"make a \"hype yourself up\" note",loc:"both"},
+{text:"try a productivity app or new tool",loc:"both"},
+{text:"eat something colorful",loc:"both"},
+{text:"wear your comfiest shoes",loc:"both"},
+{text:"notice your posture and fix it",loc:"both"},
+{text:"update your bio somewhere",loc:"both"},
+{text:"wear fun socks or accessories",loc:"both"},
+{text:"save a wholesome meme/post",loc:"both"},
+{text:"drink something other than water or coffee",loc:"both"},
+{text:"try a tiktok trend (even badly)",loc:"both"},
+{text:"organize browser tabs (close 15+)",loc:"indoors"},
+{text:"take note of what you're procrastinating",loc:"both"},
+{text:"send a \"this made me think of you\" text",loc:"both"},
+{text:"make lock screen something motivating",loc:"both"},
+{text:"check on a plant (or get one)",loc:"indoors"},
+{text:"do something slowly on purpose",loc:"both"},
+{text:"appreciate your body for what it does",loc:"both"},
+{text:"archive old chats/conversations",loc:"both"},
+{text:"check the moon phase (just for fun)",loc:"both"},
+{text:"make a \"wins\" list (any size)",loc:"both"},
+{text:"bring reusable water bottle everywhere",loc:"both"},
+{text:"notice the temperature and adjust clothes",loc:"both"},
+{text:"smell fresh air intentionally",loc:"outdoors"},
+{text:"tap into a memory (photo, song, place)",loc:"both"},
+{text:"fix one small annoying thing (loose button, dead link)",loc:"indoors"},
+{text:"notice something kind someone did",loc:"both"},
+{text:"wear your comfiest outfit",loc:"both"},
+{text:"save one useful link/article",loc:"both"},
+{text:"drink water first thing when you wake up",loc:"indoors"},
+{text:"compliment something about your space",loc:"indoors"},
+{text:"take one aesthetic photo",loc:"both"},
+{text:"notice the sky today",loc:"outdoors"},
+{text:"use a fun pen/pencil",loc:"both"},
+{text:"stretch your neck and shoulders",loc:"both"},
+{text:"put on lotion/chapstick",loc:"both"},
+{text:"notice three sounds around you",loc:"both"},
+{text:"open a window for fresh air",loc:"indoors"},
+{text:"smile at yourself",loc:"both"},
+{text:"notice one thing you like about today",loc:"both"},
+{text:"tell a friend that ya love em very much (RARE!)",loc:"both"},
+{text:"notice textures (fabric, surface, ground)",loc:"both"},
+{text:"save a recipe you want to try",loc:"both"},
+{text:"wear something with a pattern",loc:"both"},
+{text:"appreciate good lighting",loc:"both"},
+{text:"send a random emoji to a friend",loc:"both"},
+{text:"notice your energy level",loc:"both"},
+{text:"put something back where it belongs",loc:"both"},
+{text:"notice colors around you",loc:"both"},
+{text:"use airplane mode for 30 min",loc:"both"},
+{text:"appreciate something free",loc:"both"},
+{text:"notice the weather",loc:"both"},
+{text:"save a wholesome tiktok/reel",loc:"both"},
+{text:"notice one small detail",loc:"both"},
+{text:"drink tea/coffee at a different time",loc:"both"},
+{text:"wear a fun accessory",loc:"both"},
+{text:"appreciate your friends",loc:"both"},
+{text:"notice your favorite part of the day",loc:"both"},
+{text:"save a good quote/lyric",loc:"both"},
+{text:"breathe deeply 3 times",loc:"both"},
+{text:"notice something funny",loc:"both"},
+{text:"use a nice-smelling soap",loc:"indoors"},
+{text:"appreciate technology working",loc:"both"},
+{text:"acknowledge your mood",loc:"both"},
+{text:"drink something warm",loc:"both"},
+{text:"appreciate having shelter",loc:"indoors"},
+{text:"notice one privilege",loc:"both"},
+{text:"use good posture for 10 min",loc:"both"},
+{text:"appreciate your ability to learn",loc:"both"},
+{text:"notice something that makes you curious",loc:"both"},
+{text:"drink water before every meal",loc:"both"},
+{text:"appreciate having choices",loc:"both"},
+{text:"notice your thoughts",loc:"both"},
+{text:"use a new emoji",loc:"both"},
+{text:"appreciate art somewhere",loc:"both"},
+{text:"notice someone's effort",loc:"both"},
+{text:"smell something pleasant",loc:"both"},
+{text:"appreciate a small convenience",loc:"both"},
+{text:"notice your growth",loc:"both"},
+{text:"take a moment of silence",loc:"both"},
+{text:"appreciate music existing",loc:"both"},
+{text:"notice your progress",loc:"both"},
+{text:"take a screen break",loc:"both"},
+{text:"appreciate making it this far",loc:"both"},
+{text:"say something nice about yourself",loc:"both"},
+{text:"celebrate however you want",loc:"both"}
 ],
 
 medium: [
-"bring a snack to share in class",
-"listen to a full new album on your commute",
-"try a menu item you've never ordered",
-"organize one section of your bag/backpack",
-"do 10 pushups or stretch for 5 minutes",
-"make your bed properly",
-"clean out 20+ phone screenshots",
-"try a new coffee/drink order",
-"buy or make yourself a little treat",
-"tidy your study space for 10 minutes",
-"stretch for 5 minutes before bed",
-"watch the sunset or sunrise",
-"do something with your hands (origami, sketching)",
-"handwrite something instead of typing",
-"unsubscribe from 3 email lists",
-"take a selfie (don't have to post)",
-"put phone on DND for 1 hour while studying",
-"bring reusable containers instead of disposable",
-"try a tiktok recipe you've been saving",
-"move your body somehow (dance, walk, stretch)",
-"delete 5 apps you don't use",
-"listen to a song from your childhood",
-"reorganize your bookmarks/saved folders",
-"hype up a friend about their project",
-"smell something nice (candle, fresh air)",
-"wear mismatched socks on purpose",
-"try the pomodoro technique (25 min work, 5 min break)",
-"watch a video that makes you laugh",
-"eat breakfast/first meal mindfully",
-"try brown/white noise while studying",
-"wear your favorite scent",
-"play music out loud while getting ready",
-"rate every class you attended today",
-"share a photo dump",
-"take the scenic route somewhere",
-"make a \"comfort songs\" playlist",
-"light a candle while studying",
-"try a new sitting position while working",
-"swap backgrounds/themes (phone, laptop)",
-"wear something you forgot you owned",
-"stretch or do yoga for 10 minutes",
-"try a new study spot (cafe, park)",
-"double check calendar and deadlines",
-"take a silly photo with friends",
-"give someone a small random gift (candy, sticker)",
-"make a \"songs that get me\" playlist",
-"make your space smell nice (incense, spray)",
-"rate your current mood and why",
-"change your alarm sound",
-"notice 3 good things that happened",
-"wear your favorite jewelry",
-"laugh at something (find it if needed)",
-"try studying with new music genre",
-"wear something that sparks joy",
-"move one piece of furniture",
-"celebrate something small",
-"try a new route home",
-"send someone a voice note",
-"make a self-care kit (snacks, chapstick, etc)",
-"take a break outside for 10 min",
-"clean out one app's notifications",
-"try a new sitting spot in library",
-"organize one digital folder",
-"listen to something educational (podcast, lecture)",
-"try a new productivity method",
-"send a thoughtful reply (not just \"lol\")",
-"make tomorrow's to-do list tonight",
-"try food from a new place/vendor",
-"rearrange your desk setup",
-"take notes by hand in one class",
-"check your syllabus for upcoming stuff",
-"make a goal for this week",
-"try studying at a new time of day",
-"look up one thing you're curious about",
-"make a fun calendar event",
-"try a different walking pace",
-"try cooking one thing from scratch",
-"make your study playlist",
-"plan your outfit for tomorrow",
-"try a new note-taking style",
-"organize your chargers/cables",
-"try a different breakfast",
-"check your email and actually respond",
-"make a comfort food",
-"organize your tabs into groups",
-"try studying with a buddy",
-"make a \"done\" list (not to-do)",
-"try a new route walking",
-"try a new study app/tool",
-"make a monthly budget",
-"organize your photos into albums",
-"try a different seat in class",
-"make a playlist for someone else",
-"try journaling in the morning",
-"organize one drawer completely",
-"try a new study location",
-"make a \"someday\" list (RARE!)",
-"try a different coffee shop",
-"reflect on your favorite quests",
-"share this list with someone"
+{text:"bring a snack to share in class",loc:"indoors"},
+{text:"listen to a full new album on your commute",loc:"both"},
+{text:"try a menu item you've never ordered",loc:"both"},
+{text:"organize one section of your bag/backpack",loc:"both"},
+{text:"do 10 pushups or stretch for 5 minutes",loc:"both"},
+{text:"make your bed properly",loc:"indoors"},
+{text:"clean out 20+ phone screenshots",loc:"both"},
+{text:"try a new coffee/drink order",loc:"both"},
+{text:"buy or make yourself a little treat",loc:"both"},
+{text:"tidy your study space for 10 minutes",loc:"indoors"},
+{text:"stretch for 5 minutes before bed",loc:"indoors"},
+{text:"watch the sunset or sunrise",loc:"outdoors"},
+{text:"do something with your hands (origami, sketching)",loc:"both"},
+{text:"handwrite something instead of typing",loc:"both"},
+{text:"unsubscribe from 3 email lists",loc:"both"},
+{text:"take a selfie (don't have to post)",loc:"both"},
+{text:"put phone on DND for 1 hour while studying",loc:"indoors"},
+{text:"bring reusable containers instead of disposable",loc:"both"},
+{text:"try a tiktok recipe you've been saving",loc:"indoors"},
+{text:"move your body somehow (dance, walk, stretch)",loc:"both"},
+{text:"delete 5 apps you don't use",loc:"both"},
+{text:"listen to a song from your childhood",loc:"both"},
+{text:"reorganize your bookmarks/saved folders",loc:"both"},
+{text:"hype up a friend about their project",loc:"both"},
+{text:"smell something nice (candle, fresh air)",loc:"both"},
+{text:"wear mismatched socks on purpose",loc:"both"},
+{text:"try the pomodoro technique (25 min work, 5 min break)",loc:"indoors"},
+{text:"watch a video that makes you laugh",loc:"both"},
+{text:"eat breakfast/first meal mindfully",loc:"both"},
+{text:"try brown/white noise while studying",loc:"indoors"},
+{text:"wear your favorite scent",loc:"both"},
+{text:"play music out loud while getting ready",loc:"indoors"},
+{text:"rate every class you attended today",loc:"both"},
+{text:"share a photo dump",loc:"both"},
+{text:"take the scenic route somewhere",loc:"outdoors"},
+{text:"make a \"comfort songs\" playlist",loc:"both"},
+{text:"light a candle while studying",loc:"indoors"},
+{text:"try a new sitting position while working",loc:"indoors"},
+{text:"swap backgrounds/themes (phone, laptop)",loc:"both"},
+{text:"wear something you forgot you owned",loc:"both"},
+{text:"stretch or do yoga for 10 minutes",loc:"both"},
+{text:"try a new study spot (cafe, park)",loc:"both"},
+{text:"double check calendar and deadlines",loc:"both"},
+{text:"take a silly photo with friends",loc:"both"},
+{text:"give someone a small random gift (candy, sticker)",loc:"both"},
+{text:"make a \"songs that get me\" playlist",loc:"both"},
+{text:"make your space smell nice (incense, spray)",loc:"indoors"},
+{text:"rate your current mood and why",loc:"both"},
+{text:"change your alarm sound",loc:"both"},
+{text:"notice 3 good things that happened",loc:"both"},
+{text:"wear your favorite jewelry",loc:"both"},
+{text:"laugh at something (find it if needed)",loc:"both"},
+{text:"try studying with new music genre",loc:"indoors"},
+{text:"wear something that sparks joy",loc:"both"},
+{text:"move one piece of furniture",loc:"indoors"},
+{text:"celebrate something small",loc:"both"},
+{text:"try a new route home",loc:"outdoors"},
+{text:"send someone a voice note",loc:"both"},
+{text:"make a self-care kit (snacks, chapstick, etc)",loc:"both"},
+{text:"take a break outside for 10 min",loc:"outdoors"},
+{text:"clean out one app's notifications",loc:"both"},
+{text:"try a new sitting spot in library",loc:"indoors"},
+{text:"organize one digital folder",loc:"both"},
+{text:"listen to something educational (podcast, lecture)",loc:"both"},
+{text:"try a new productivity method",loc:"both"},
+{text:"send a thoughtful reply (not just \"lol\")",loc:"both"},
+{text:"make tomorrow's to-do list tonight",loc:"both"},
+{text:"try food from a new place/vendor",loc:"both"},
+{text:"rearrange your desk setup",loc:"indoors"},
+{text:"take notes by hand in one class",loc:"indoors"},
+{text:"check your syllabus for upcoming stuff",loc:"both"},
+{text:"make a goal for this week",loc:"both"},
+{text:"try studying at a new time of day",loc:"indoors"},
+{text:"look up one thing you're curious about",loc:"both"},
+{text:"make a fun calendar event",loc:"both"},
+{text:"try a different walking pace",loc:"outdoors"},
+{text:"try cooking one thing from scratch",loc:"indoors"},
+{text:"make your study playlist",loc:"both"},
+{text:"plan your outfit for tomorrow",loc:"both"},
+{text:"try a new note-taking style",loc:"indoors"},
+{text:"organize your chargers/cables",loc:"indoors"},
+{text:"try a different breakfast",loc:"indoors"},
+{text:"check your email and actually respond",loc:"both"},
+{text:"make a comfort food",loc:"indoors"},
+{text:"organize your tabs into groups",loc:"both"},
+{text:"try studying with a buddy",loc:"both"},
+{text:"make a \"done\" list (not to-do)",loc:"both"},
+{text:"try a new route walking",loc:"outdoors"},
+{text:"try a new study app/tool",loc:"both"},
+{text:"make a monthly budget",loc:"both"},
+{text:"organize your photos into albums",loc:"both"},
+{text:"try a different seat in class",loc:"indoors"},
+{text:"make a playlist for someone else",loc:"both"},
+{text:"try journaling in the morning",loc:"both"},
+{text:"organize one drawer completely",loc:"indoors"},
+{text:"try a new study location",loc:"both"},
+{text:"make a \"someday\" list (RARE!)",loc:"both"},
+{text:"try a different coffee shop",loc:"both"},
+{text:"reflect on your favorite quests",loc:"both"},
+{text:"share this list with someone",loc:"both"}
 ],
 
 hard: [
-"start a conversation with someone you've never talked to",
-"go to office hours and ask a real question",
-"introduce yourself to someone sitting alone",
-"work on an assignment the day it's assigned",
-"spend 90 minutes in the library (phone on DND)",
-"fix one thing you've been procrastinating (email, form, call)",
-"say no to something you don't actually want to do",
-"finish all homework before 9pm",
-"write in a journal for 10+ minutes",
-"apply to one opportunity (job, internship, club)",
-"have a difficult conversation you've been avoiding",
-"create something artistic just for fun (30+ min)",
-"update your resume or CV",
-"organize a hangout instead of waiting for plans",
-"spend zero money today",
-"clean out your entire backpack/bag",
-"go to a campus resource you've never used",
-"attend an event you'd normally skip",
-"track all your spending today",
-"goon it crazy style (RARE!)",
-"tackle the assignment you've been avoiding most",
-"organize your digital files (downloads, drive)",
-"write out ideal daily routine and try following it",
-"spend 2 hours on a hobby (not scrolling)",
-"write an email you've been drafting mentally",
-"fix your notification settings (turn off unnecessary)",
-"practice interview questions out loud",
-"do a brain dump (write everything on your mind)",
-"cook something instead of ordering",
-"read 30+ pages of something non-academic",
-"spend evening (after 7pm) phone-free",
-"go somewhere alone you'd usually go with friends",
-"start a creative side project (any kind)",
-"deep clean one corner of your room",
-"reach out to someone you admire",
-"volunteer to help with something",
-"say yes to something spontaneous",
-"practice something you want to get better at",
-"attend office hours even if no questions",
-"explore a new part of campus",
-"work ahead on something due later",
-"clean out your downloads folder",
-"do something kind for a stranger",
-"go to bed 1 hour earlier than usual",
-"wake up without hitting snooze",
-"finish all readings for the week",
-"start something you've been putting off",
-"teach someone something you know",
-"plan something fun for next week",
-"commit to one new habit going forward"
+{text:"start a conversation with someone you've never talked to",loc:"both"},
+{text:"go to office hours and ask a real question",loc:"indoors"},
+{text:"introduce yourself to someone sitting alone",loc:"both"},
+{text:"work on an assignment the day it's assigned",loc:"indoors"},
+{text:"spend 90 minutes in the library (phone on DND)",loc:"indoors"},
+{text:"fix one thing you've been procrastinating (email, form, call)",loc:"both"},
+{text:"say no to something you don't actually want to do",loc:"both"},
+{text:"finish all homework before 9pm",loc:"indoors"},
+{text:"write in a journal for 10+ minutes",loc:"both"},
+{text:"apply to one opportunity (job, internship, club)",loc:"both"},
+{text:"have a difficult conversation you've been avoiding",loc:"both"},
+{text:"create something artistic just for fun (30+ min)",loc:"both"},
+{text:"update your resume or CV",loc:"indoors"},
+{text:"organize a hangout instead of waiting for plans",loc:"both"},
+{text:"spend zero money today",loc:"both"},
+{text:"clean out your entire backpack/bag",loc:"indoors"},
+{text:"go to a campus resource you've never used",loc:"both"},
+{text:"attend an event you'd normally skip",loc:"both"},
+{text:"track all your spending today",loc:"both"},
+{text:"goon it crazy style (RARE!)",loc:"indoors"},
+{text:"tackle the assignment you've been avoiding most",loc:"indoors"},
+{text:"organize your digital files (downloads, drive)",loc:"indoors"},
+{text:"write out ideal daily routine and try following it",loc:"both"},
+{text:"spend 2 hours on a hobby (not scrolling)",loc:"both"},
+{text:"write an email you've been drafting mentally",loc:"both"},
+{text:"fix your notification settings (turn off unnecessary)",loc:"both"},
+{text:"practice interview questions out loud",loc:"indoors"},
+{text:"do a brain dump (write everything on your mind)",loc:"both"},
+{text:"cook something instead of ordering",loc:"indoors"},
+{text:"read 30+ pages of something non-academic",loc:"both"},
+{text:"spend evening (after 7pm) phone-free",loc:"both"},
+{text:"go somewhere alone you'd usually go with friends",loc:"both"},
+{text:"start a creative side project (any kind)",loc:"both"},
+{text:"deep clean one corner of your room",loc:"indoors"},
+{text:"reach out to someone you admire",loc:"both"},
+{text:"volunteer to help with something",loc:"both"},
+{text:"say yes to something spontaneous",loc:"both"},
+{text:"practice something you want to get better at",loc:"both"},
+{text:"attend office hours even if no questions",loc:"indoors"},
+{text:"explore a new part of campus",loc:"outdoors"},
+{text:"work ahead on something due later",loc:"indoors"},
+{text:"clean out your downloads folder",loc:"indoors"},
+{text:"do something kind for a stranger",loc:"both"},
+{text:"go to bed 1 hour earlier than usual",loc:"indoors"},
+{text:"wake up without hitting snooze",loc:"indoors"},
+{text:"finish all readings for the week",loc:"indoors"},
+{text:"start something you've been putting off",loc:"both"},
+{text:"teach someone something you know",loc:"both"},
+{text:"plan something fun for next week",loc:"both"},
+{text:"commit to one new habit going forward",loc:"both"}
 ]
 
 };
@@ -501,32 +530,52 @@ function pickRandom(arr){
 return arr[Math.floor(Math.random()*arr.length)];
 }
 
+function filterByLocation(arr, filter){
+if(filter === 'all') return arr;
+return arr.filter(q => q.loc === filter || q.loc === 'both');
+}
+
 function getRandomQuests(){
+const filter = currentFilter;
+
+const easyFiltered = filterByLocation(allQuests.easy, filter);
+const mediumFiltered = filterByLocation(allQuests.medium, filter);
+const hardFiltered = filterByLocation(allQuests.hard, filter);
 
 return[
-{text:pickRandom(allQuests.easy),difficulty:"easy"},
-{text:pickRandom(allQuests.easy),difficulty:"easy"},
-{text:pickRandom(allQuests.easy),difficulty:"easy"},
-{text:pickRandom(allQuests.medium),difficulty:"medium"},
-{text:pickRandom(allQuests.medium),difficulty:"medium"},
-{text:pickRandom(allQuests.hard),difficulty:"hard"}
+{text:pickRandom(easyFiltered).text,difficulty:"easy"},
+{text:pickRandom(easyFiltered).text,difficulty:"easy"},
+{text:pickRandom(easyFiltered).text,difficulty:"easy"},
+{text:pickRandom(mediumFiltered).text,difficulty:"medium"},
+{text:pickRandom(mediumFiltered).text,difficulty:"medium"},
+{text:pickRandom(hardFiltered).text,difficulty:"hard"}
 ];
+}
 
+function setFilter(filter){
+currentFilter = filter;
+
+// update tab active states
+document.querySelectorAll('.filter-tab').forEach(tab => {
+tab.classList.remove('active');
+});
+document.getElementById('tab-' + filter).classList.add('active');
+
+// reshuffle with new filter
+shuffleQuests();
 }
 
 function save(){
-
 localStorage.setItem(STORAGE,JSON.stringify({
 quests,
 states,
 theme:document.body.classList.contains("dark-mode"),
+filter:currentFilter,
 date:new Date().toDateString()
 }));
-
 }
 
 function load(){
-
 let data=localStorage.getItem(STORAGE);
 if(!data)return false;
 
@@ -536,6 +585,13 @@ if(data.date!==new Date().toDateString())return false;
 
 quests=data.quests;
 states=data.states;
+currentFilter=data.filter || 'all';
+
+// restore filter tab active state
+document.querySelectorAll('.filter-tab').forEach(tab => {
+tab.classList.remove('active');
+});
+document.getElementById('tab-' + currentFilter).classList.add('active');
 
 if(data.theme){
 document.body.classList.add("dark-mode");
@@ -543,11 +599,9 @@ document.documentElement.style.backgroundColor='#242921';
 }
 
 return true;
-
 }
 
 function render(){
-
 const list=document.getElementById("questList");
 const title=document.getElementById("title");
 
@@ -556,7 +610,7 @@ const done=states.filter(v=>v).length;
 if(done===6){
 title.textContent="all finished!";
 }else{
-title.textContent="sidequests";
+title.textContent="sidequest";
 }
 
 list.innerHTML="";
@@ -590,11 +644,9 @@ item.appendChild(content);
 list.appendChild(item);
 
 });
-
 }
 
 function toggle(i){
-  
 playClick();
 states[i]=!states[i];
 
@@ -602,33 +654,27 @@ save();
 render();
 
 if(states.every(v=>v))celebrate();
-
 }
 
 function shuffleQuests(){
-
 quests=getRandomQuests();
 states=[false,false,false,false,false,false];
 
 save();
 render();
-
 }
 
 function toggleTheme(){
-
 document.body.classList.toggle("dark-mode");
 document.documentElement.style.backgroundColor = 
 document.body.classList.contains('dark-mode') ? '#242921' : '#c7c7c3';
 save();
-
 }
 
 function celebrate(){
-
 const msg=document.createElement("div");
 
-msg.innerText="quests completed! ✧";
+msg.innerText="quest complete ✧";
 
 msg.style.cssText=`
 position:fixed;
@@ -651,17 +697,14 @@ msg.style.color='#242921';
 document.body.appendChild(msg);
 
 setTimeout(()=>msg.remove(),2000);
-
 }
 
 function init(){
-
 if(!load()){
 quests=getRandomQuests();
 }
 
 render();
-
 }
 
 init();
